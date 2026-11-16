@@ -112,7 +112,24 @@ details.rg{background:#fff;border:1px solid var(--line);border-radius:14px;margi
 .rdi{display:flex;gap:12px;align-items:center;padding:9px 0;border-top:1px solid var(--line)}.rdi i{font-style:normal;width:22px;height:22px;border-radius:50%;display:grid;place-items:center;font-size:12px;flex:none}.rdi .ok{background:#dcfce7;color:#15803d}.rdi .no{background:#fef3c7;color:#b45309}.rdi span{flex:1}.rdi button{min-height:32px;padding:0 12px;font-size:13px}
 #fcv{max-width:min(100%,780px);margin:0}
 input[type=checkbox]{min-height:0;width:16px;height:16px;padding:0;margin:0 8px 0 0;border:0;vertical-align:middle;accent-color:var(--ac);flex:none}.li label{display:flex;align-items:center}
-@media(max-width:900px){nav{background:#fff}#hk,#sav{display:none}.more summary{width:auto}h1{font-size:15px}}
+@media(max-width:900px){nav{background:#fff}#hk,#sav{display:none}.more summary{width:auto}h1{font-size:15px}.hbn span{display:none}.hbn input{width:120px}}
+/* === ВЕРСИЯ 2: мастер стиля, анимации, адаптив === */
+select{max-width:100%}.s{transition:background .35s ease,box-shadow .2s,transform .2s}
+button{transition:background .15s,border-color .15s,transform .12s,box-shadow .15s}
+.pri{background:linear-gradient(180deg,#4a76f6,#3d6af2);box-shadow:0 1px 2px rgba(61,106,242,.35),0 8px 16px -8px rgba(61,106,242,.7)}.pri:hover{background:linear-gradient(180deg,#5481f8,#3865ec)}.pri:active{transform:translateY(1px) scale(.99)}
+.card{transition:box-shadow .25s}.card:hover{box-shadow:0 2px 4px rgba(20,30,50,.05),0 16px 36px rgba(20,30,50,.07)}
+@keyframes up{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+.tab.on>.ph,.tab.on>.coach,.tab.on>.tb,.tab.on>.card,.tab.on>.seg{animation:up .5s cubic-bezier(.2,.7,.2,1) both}.tab.on>.coach{animation-delay:.04s}.tab.on>.tb{animation-delay:.08s}.tab.on>.card{animation-delay:.12s}
+.hbn{display:flex;align-items:center;gap:8px;margin-left:8px}.hbn span{font-size:12px;color:var(--mut)}.hbn input{min-height:34px;width:200px;border-color:transparent;background:#eef1f5;font-weight:500}.hbn input:focus{background:#fff;border-color:var(--ac)}
+.yform{display:grid;grid-template-columns:1.7fr 1.1fr 1.3fr 1.1fr auto;gap:14px;align-items:end;margin:0}.yform .fld>span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.yc{animation:up .55s cubic-bezier(.2,.7,.2,1) both;animation-delay:calc(var(--i)*80ms)}.yc .pal{height:26px;border-radius:9px;margin:0}
+.mp{border-radius:14px;padding:16px;display:grid;gap:8px;box-shadow:inset 0 0 0 1px rgba(0,0,0,.07);min-height:150px;align-content:start}.mph{display:flex;align-items:center;gap:8px;font-size:14px}.mph i{width:24px;height:24px;border-radius:50%;display:grid;place-items:center;font:700 12px system-ui;font-style:normal}
+.mpt{font-size:20px;font-weight:700;line-height:1.15}.mpp{font-size:12.5px;opacity:.8}.mpb{justify-self:start;font-size:12.5px;font-weight:600;padding:7px 14px}
+.yr{display:grid;gap:8px}.yr div{display:flex;gap:10px;align-items:center}.yr i{width:26px;height:26px;border-radius:8px;flex:none;box-shadow:inset 0 0 0 1px rgba(0,0,0,.1)}.yr span{font-size:12.5px;color:var(--mut);line-height:1.3}.yr b{display:block;color:var(--fg);font-weight:600}
+.ynote{margin-top:22px;padding:14px 18px;background:#fff;border:1px solid var(--line);border-radius:14px;color:var(--mut)}.ynote b{color:var(--fg)}.ynote span{display:block;margin-top:4px;font-size:13px}
+@media(max-width:560px){h1{font-size:0}header{gap:8px;padding:0 12px}.hbn{flex:1;min-width:0;margin:0}.hbn input{width:100%}}
+@media(max-width:1100px){.yform{grid-template-columns:repeat(2,minmax(0,1fr))}.yform button{grid-column:1/-1}}
+@media(max-width:700px){.yform{grid-template-columns:1fr}.bar>select,.bar>input:not([type=color]):not([type=checkbox]):not([type=range]):not([type=file]){flex:1 1 100%;min-width:0;max-width:100%}}
 </style></head><body>
 <header><button id="nt" title="Скрыть или показать меню (Ctrl+B)" aria-label="Меню"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button><h1>Brand Studio</h1><div id="hp"></div><span id="sav"></span><button id="hk">Поиск Ctrl+K</button></header><nav id="nav"></nav>
 <main>
@@ -428,7 +445,7 @@ function draw(c,w,h,safe){const x=c.getContext('2d');c.width=w;c.height=h;const 
 /* === ЕЩЁ ФУНКЦИИ === */
 function gen(){snap();const[L0,C0,h]=toOk(S.base),off={analog:[0,-30,30,-60,60],comp:[0,180,15,195,90],triad:[0,120,240,60,180],mono:[0,0,0,0,0]}[S.harm],N=+$('#cn').value||5;
  const Ls=[L0,.95,...Array.from({length:Math.max(0,N-3)},(_,k)=>.82-.42*k/Math.max(1,N-4)),.24],old=S.cols;
- S.cols=Ls.map((L,i)=>{if(old[i]&&old[i].k)return old[i];if(i==0)return{h:S.base,k:false};const C=cl(C0*S.chr*(i==1?.2:i==N-1?.25:R(.6,1.2)),0,.32);return{h:fromOk(cl(L+S.lgt+R(-.04,.04),.12,.97),C,(h+off[i%5]+R(-8,8)+360)%360),k:false}});
+ S.cols=Ls.map((L,i)=>{if(old[i]&&old[i].k)return old[i];if(i==0)return{h:S.base,k:false};const C=cl(C0*S.chr*(i==1?.2:i==N-1?.25:R(.6,1.2)),0,.32);return{h:pretty(cl(L+S.lgt+R(-.04,.04),.12,.97),C,h+off[i%5]+R(-8,8)),k:false}});
  S.sel=Math.min(S.sel,N-1);dedupe();render()}
 function use(h){snap();const N=S.cols.length;let i=S.slot%N;for(let n=0;n<N;n++){if(!S.cols[(i+n)%N].k){i=(i+n)%N;break}}S.cols[i]={h,k:false};S.slot=(i+1)%N;S.sel=i;render()}
 $('#cn').onchange=gen;
@@ -872,6 +889,73 @@ $('#ic_s').onclick=icSearch;$('#ic_q').onkeydown=e=>{if(e.key=='Enter')icSearch(
 if('serviceWorker' in navigator&&location.protocol.startsWith('http'))navigator.serviceWorker.register('sw.js').catch(()=>{});
 
 $('#t-c').append($('#c_in').closest('.card'));$('#c_new').classList.remove('pri');
+
+/* === ВЕРСИЯ 2: ПАЛИТРЫ, НИШИ, МАСТЕР СТИЛЯ, БРЕНД-БОРД === */
+if(window.CanvasRenderingContext2D&&!CanvasRenderingContext2D.prototype.roundRect)CanvasRenderingContext2D.prototype.roundRect=function(x,y,w,h,r){r=Math.min(r||0,w/2,h/2);this.moveTo(x+r,y);this.arcTo(x+w,y,x+w,y+h,r);this.arcTo(x+w,y+h,x,y+h,r);this.arcTo(x,y+h,x,y,r);this.arcTo(x,y,x+w,y,r);this.closePath()};
+const pretty=(L,C,H)=>{H=((H%360)+360)%360;if(C>.05&&H>70&&H<135&&L<.62){H=H<100?58:148;C=Math.min(C,.14)}return fromOk(L,C,H)};
+function mkPal(base,harm,chr,lgt){const[L0,C0,h]=toOk(base),O={analog:[-28,28],comp:[165,180],triad:[120,240],mono:[0,0]}[harm],
+ surf=pretty(cl(.968+lgt*.15,.94,.985),.012+C0*.05,h),soft=pretty(cl(.9+lgt*.2,.8,.94),cl(C0*.3,.03,.075),h+O[0]),accL=harm=='mono'?cl(L0+.16,.55,.78):cl(.64+lgt,.52,.74),ink=pretty(.21,cl(C0*.18,.02,.05),h);
+ let a=pretty(accL,cl(C0*chr*.95,.06,.2),h+O[1]);if(dE(a,base)<12)a=pretty(cl(accL+.12,.5,.85),cl(C0*chr*.9,.06,.2),h+O[1]);return[base,surf,soft,a,ink]}
+Object.assign(ND,{'Автомобили и автосервис':{b:['#1f3a5f','#d62828','#3a3a3c'],f:[7,4,0],r:6,why:'Тёмный синий и графит дают технику и надёжность, красный добавляет скорость и мощность.',av:'Пастельные тона не вяжутся с техникой.'},
+'Архитектура и интерьер':{b:['#3d3a35','#8c6f4e','#2f5d62'],f:[2,3,8],r:2,why:'Тёплый графит, дерево и глубокая зелень: спокойствие материалов, цвет не спорит с проектами.',av:'Яркие акценты отвлекают от визуализаций.'},
+'Консалтинг и B2B':{b:['#1d4ed8','#0f766e','#4338ca'],f:[0,6,2],r:6,why:'Сдержанные синий, зелёный и индиго передают экспертность и спокойную уверенность.',av:'Игривые цвета снижают доверие к цене услуги.'},
+'Страхование':{b:['#1e6091','#2a9d8f','#f4a261'],f:[6,0,5],r:10,why:'Синий и бирюзовый дают защиту и спокойствие, тёплый акцент добавляет человечности.',av:'Тёмно-красный напоминает об авариях.'},
+'Фото и видео':{b:['#111827','#c2410c','#7c3aed'],f:[1,7,2],r:2,why:'Нейтральная тёмная база не конкурирует с кадрами, а один акцент задаёт характер.',av:'Яркий цветной фон искажает восприятие работ.'},
+'Музыка и развлечения':{b:['#7c3aed','#ef4444','#06b6d4'],f:[1,7,4],r:12,why:'Насыщенные фиолетовый, красный и циан передают энергию и эмоции сцены.',av:'Блёклые тона выглядят скучно.'},
+'Игры и киберспорт':{b:['#6d28d9','#0891b2','#65a30d'],f:[7,1,4],r:6,why:'Фиолетовый, циан и лайм читаются как игры и скорость.',av:'Строгий офисный синий скрывает характер.'},
+'Книги и издательства':{b:['#7a1f3d','#1e3a5f','#3f6212'],f:[2,8,3],r:4,why:'Глубокие бордо, синий и оливковый дают ощущение бумаги, чтения и традиции.',av:'Неоновые цвета обесценивают текст.'},
+'Цветы и подарки':{b:['#d6336c','#5f9a6a','#e8896a'],f:[3,2,6],r:18,why:'Тёплая роза, листовая зелень и персик создают нежность и праздник.',av:'Холодный серый и чёрный убирают эмоцию.'},
+'Зоотовары и ветеринария':{b:['#0d9488','#d97706','#3b82f6'],f:[4,6,5],r:16,why:'Бирюзовый даёт заботу, тёплый янтарь выглядит дружелюбно и живо.',av:'Чёрный и тёмно-красный пугают питомцев и хозяев.'},
+'Кофейня и пекарня':{b:['#6f4e37','#c07a3b','#2f5d50'],f:[3,2,6],r:12,why:'Кофейный коричневый, карамель и тёмная зелень передают уют и вкус.',av:'Холодный синий убивает тепло и аппетит.'},
+'Бары и клубы':{b:['#7c3aed','#e11d48','#0284c7'],f:[1,7,4],r:8,why:'Насыщенные тёмные тона и яркие акценты работают вечером и при слабом свете.',av:'Пастельные оттенки теряются в темноте.'},
+'Фермерские продукты':{b:['#4d7c0f','#b45309','#0f766e'],f:[3,9,8],r:12,why:'Земляные зелёный и охра говорят о натуральности и честном происхождении.',av:'Глянцевые неоновые цвета противоречат идее натурального.'},
+'Сельское хозяйство':{b:['#3f6212','#ca8a04','#1d4ed8'],f:[8,7,0],r:6,why:'Зелёный, цвет зерна и синий воды: узнаваемая палитра земли и урожая.',av:'Холодные фиолетовые не связаны с отраслью.'},
+'Промышленность и производство':{b:['#1d4ed8','#ea580c','#334155'],f:[7,0,4],r:4,why:'Индустриальный синий, сигнальный оранжевый и сталь: сила, безопасность, точность.',av:'Мягкие пастельные цвета слабо передают мощность.'},
+'HR и рекрутинг':{b:['#4f46e5','#0ea5e9','#f97316'],f:[6,0,4],r:12,why:'Индиго и голубой дают доверие, тёплый акцент выглядит человечно и приветливо.',av:'Тёмные мрачные тона отпугивают кандидатов.'},
+'Благотворительность':{b:['#e11d48','#0ea5e9','#16a34a'],f:[5,6,3],r:14,why:'Тёплый красный вызывает сочувствие, синий и зелёный добавляют надёжность и надежду.',av:'Слишком мрачные цвета снижают желание помогать.'},
+'Госсектор и общественные':{b:['#1e3a8a','#0f766e','#7f1d1d'],f:[8,0,2],r:4,why:'Сдержанные синий, зелёный и бордо вызывают доверие и официальность.',av:'Яркие неоновые цвета выглядят несерьёзно.'},
+'Финтех и крипто':{b:['#4f46e5','#059669','#d97706'],f:[1,6,0],r:12,why:'Индиго и изумруд сочетают технологии и рост, золото добавляет ценность.',av:'Красный как основной цвет читается как убыток.'},
+'Электроника и гаджеты':{b:['#2563eb','#111827','#ea580c'],f:[0,6,1],r:10,why:'Чистый синий и графит выглядят как технологии, оранжевый добавляет призыв к покупке.',av:'Пастельная розовая гамма слабо подходит технике.'},
+'Свадьбы и мероприятия':{b:['#b76e79','#8b7ec8','#b8913f'],f:[3,2,6],r:18,why:'Пыльная роза, лаванда и шампань дают нежность, праздник и премиальность.',av:'Агрессивные яркие цвета разрушают романтику.'},
+'Психология и коучинг':{b:['#5b7fa6','#6f9272','#b0805b'],f:[6,3,2],r:16,why:'Приглушённые синий, шалфей и тёплая глина успокаивают и вызывают доверие.',av:'Кричащие цвета создают тревогу.'},
+'Йога и медитация':{b:['#5f9482','#8b7ec8','#d9946a'],f:[3,9,6],r:20,why:'Шалфей, лаванда и мягкий персик дают тишину, мягкость и баланс.',av:'Яркие насыщенные цвета нарушают спокойствие.'},
+'Онлайн-магазин и ритейл':{b:['#e11d48','#2563eb','#d97706'],f:[4,0,7],r:10,why:'Контрастные красный и синий привлекают внимание к цене и действию, оранжевый добавляет теплоту.',av:'Слишком много цветов усложняет выбор.'},
+'Клининг и услуги для дома':{b:['#0284c7','#16a34a','#d97706'],f:[6,4,5],r:14,why:'Чистый голубой и свежий зелёный передают чистоту, янтарный добавляет бодрости.',av:'Тёмные тона ассоциируются с грязью.'}});
+Object.assign(KW,{'Автомобили и автосервис':['авто','шиномонтаж','запчаст','детейлинг','такси'],'Архитектура и интерьер':['архитектур','интерьер','проектиров','ландшафт'],'Консалтинг и B2B':['консалтинг','аудит','b2b','аутсорсинг','оптов','стратег'],'Страхование':['страхов','полис','осаго','каско'],'Фото и видео':['фотограф','видеограф','фотостуди','съёмк','съемк'],'Музыка и развлечения':['музык','концерт','развлечен','шоу','кино','театр'],'Игры и киберспорт':['игр','геймин','киберспорт','game','стрим'],'Книги и издательства':['книг','издательств','типограф','библиотек','журнал'],'Цветы и подарки':['цвет','букет','подарк','флорист','сувенир'],'Зоотовары и ветеринария':['ветеринар','зоо','питомц','корм','собак','кошк'],'Кофейня и пекарня':['кофейн','пекарн','булоч','выпечк','десерт'],'Бары и клубы':['бар','паб','клуб','кальян','коктейл'],'Фермерские продукты':['ферм','мёд','молочн','сыр'],'Сельское хозяйство':['агро','сельхоз','урожай','зерно','семен','удобрен'],'Промышленность и производство':['производств','завод','станк','металл','оборудован','промышлен'],'HR и рекрутинг':['рекрутинг','вакан','кадров','hr'],'Благотворительность':['благотворит','фонд','волонтер','волонтёр','нко'],'Госсектор и общественные':['госуслуг','администрац','министерств','муниципал','общественн'],'Финтех и крипто':['крипт','блокчейн','финтех','токен','биткоин','трейдинг'],'Электроника и гаджеты':['электроник','гаджет','смартфон','ноутбук','наушник'],'Свадьбы и мероприятия':['свадьб','мероприят','event','праздник','банкет'],'Психология и коучинг':['коуч','психолог','терапевт','ментор'],'Йога и медитация':['йог','медитац','осознанн','ретрит'],'Онлайн-магазин и ритейл':['магазин','ритейл','маркетплейс','товар','продаж'],'Клининг и услуги для дома':['клининг','уборк','химчистк','прачечн']});
+KW['Еда и рестораны']=KW['Еда и рестораны'].filter(x=>x!='бар');
+$('#y_n').innerHTML=Object.keys(ND).sort((a,b)=>a.localeCompare(b,'ru')).map(k=>`<option>${k}</option>`).join('');
+const D6=[['Спокойный и надёжный','Один уверенный акцент на спокойной базе. Подходит, когда важно доверие.','analog',.8,0,'letter',0,0],['Современный и чёткий','Контрастный акцент на нейтральной базе. Лучше всего читается.','comp',1,0,'lsq',1,0],['Выразительный и смелый','Яркая схема из трёх оттенков. Запоминается, требует аккуратности.','triad',1.2,.02,'dots',2,0],['Мягкий и дружелюбный','Светлые воздушные тона. Создают ощущение заботы.','analog',.65,.04,'circle',0,14],['Строгий и сдержанный','Глубокие тона и минимум цвета. Выглядит дорого.','mono',.7,-.05,'square',1,-12],['Тёплый и живой','Сдвиг в тёплую сторону: энергия и приветливость.','comp',1.05,.01,'diamond',2,18]];
+const rolesOf=h=>{const o=h.map(toOk),by=[...h.keys()].sort((a,b)=>o[b][0]-o[a][0]),bg=h[by[0]];let t=h[by[by.length-1]];if(cr(t,bg)<4.5)t='#0f172a';return{bg,tx:t,ac:h[0]}};
+function yFonts(f){let l=$('#gfy');if(!l){l=document.createElement('link');l.id='gfy';l.rel='stylesheet';document.head.append(l)}l.href='https://fonts.googleapis.com/css2?'+f.map(n=>'family='+n.replace(/ /g,'+')+':wght@400;700').join('&')+'&display=swap'}
+function yBuild(){const nk=$('#y_n').value,nd=ND[nk],t=+$('#y_t').value,ra=[-2,4,2][t],ca=[-.1,0,.12][t],bon=[[0,4],[3,1],[2,5]][t];
+ const out=D6.map((d,i)=>{let b=nd.b[d[6]];if(d[7]){const o=toOk(b);b=fromOk(o[0],o[1],(o[2]+d[7]+360)%360)}const chr=cl(d[3]+ca,.5,1.5),pal=mkPal(b,d[2],chr,d[4]);return{d,pal,chr,sc:score(pal,nk),rad:Math.max(2,nd.r+ra+(i==3?6:i==4?-2:i%3*2)),font:nd.f[i%3],tot:0,i}});
+ out.forEach(o=>o.tot=o.sc.t+(bon.includes(o.i)?3:0));out.sort((a,b)=>b.tot-a.tot);S.y=out;return{nk,nd,out}}
+function yRender(more){const{nk,nd,out}=yBuild();yFonts([...new Set(out.flatMap(o=>FP[o.font]))]);const B=esc($('#y_b').value.trim()||'Ваш бренд');
+ const card=(o,k)=>{const r=rolesOf(o.pal),on=tx(r.ac),F=FP[o.font],ro=[['Основной',o.pal[0],'кнопки, ссылки, акценты'],['Фон',r.bg,'страницы и карточки'],['Текст',r.tx,'заголовки и абзацы']];
+  return`<div class="card yc${k==0?' best':''}" style="--i:${k%3}">${k==0?'<span class="bdg">Рекомендуем</span>':''}<div class="mp" style="background:${r.bg};color:${r.tx}"><div class="mph"><i style="background:${r.ac};color:${on}">${B[0]}</i><b style="font-family:'${F[0]}',sans-serif">${B}</b></div><div class="mpt" style="font-family:'${F[0]}',sans-serif">Заголовок страницы</div><div class="mpp" style="font-family:'${F[1]}',sans-serif">Короткое описание услуги в основном шрифте.</div><span class="mpb" style="background:${r.ac};color:${on};border-radius:${o.rad}px;font-family:'${F[1]}',sans-serif">Оставить заявку</span></div>
+  <div class="pal">${o.pal.map(h=>`<i style="background:${h}" title="${h.toUpperCase()}"></i>`).join('')}</div><h3>${o.d[0]}</h3><p>${o.d[1]}</p>
+  <div class="yr">${ro.map(x=>`<div><i style="background:${x[1]}"></i><span><b>${x[0]}: ${cname(x[1])}</b>${x[2]}</span></div>`).join('')}</div>
+  <div class="yf" style="color:var(--mut)">${F[0]} и ${F[1]} · скругление ${o.rad} px · оценка ${o.sc.t}/100</div><button class="${k==0?'pri':''}" data-y="${k}">Выбрать это направление</button></div>`};
+ $('#y_res').innerHTML=`<div class="ynote"><b>${nk}.</b> ${nd.why}<span>Чего избегать: ${nd.av}</span></div><div class="y3">${out.slice(0,3).map((o,k)=>card(o,k)).join('')}</div>`+(more?`<div class="y3">${out.slice(3).map((o,k)=>card(o,k+3)).join('')}</div>`:'<div style="text-align:center;margin-top:20px"><button id="y_more">Показать ещё 3 варианта</button></div>')}
+$('#y_go').onclick=()=>yRender(false);$('#y_res').addEventListener('click',e=>{if(e.target.id=='y_more')yRender(true)});
+(function(){const b=$('#y_go').parentElement;b.className='yform';b.style.margin='0';b.querySelectorAll('.fld').forEach(f=>{f.style.minWidth='0';f.classList.remove('grow')});b.querySelectorAll('.fld>span').forEach(x=>{if(x.textContent.startsWith('Название бренда'))x.textContent='Название бренда'});$('#y_b').placeholder='Необязательно';$('#y_go').style.height='44px';
+ const l=document.createElement('label');l.className='hbn';l.innerHTML='<span>Проект</span>';const bn=$('#bn');bn.placeholder='Название бренда';bn.setAttribute('aria-label','Название бренда');l.append(bn);$('header h1').after(l)})();
+$('#bn').addEventListener('input',()=>{if($('#lt').dataset.m!='1')$('#lt').value=$('#bn').value;identR()});$('#lt').addEventListener('input',()=>{$('#lt').dataset.m='1'});
+async function boardPNG(){const F=FP[S.font];try{await Promise.all(F.map(f=>document.fonts.load(`700 24px "${f}"`,'Аб')))}catch{}
+ const T=th(),W=1600,H=1000,c=document.createElement('canvas'),x=c.getContext('2d'),n=S.cols.length,R=+$('#kr').value,nm=ph()||'Бренд';c.width=W;c.height=H;
+ const rr=(a,b,w,h,r,f,st)=>{x.beginPath();x.roundRect(a,b,w,h,r);if(f){x.fillStyle=f;x.fill()}if(st){x.strokeStyle=st;x.lineWidth=2;x.stroke()}},ft=(w,z,fam)=>`${w} ${z}px "${fam}",sans-serif`;
+ x.fillStyle=T.bg;x.fillRect(0,0,W,H);rr(48,48,700,430,28,T.soft);logo(x,398,263,88,{t:nm,k:$('#lm').value,col:false,wt:$('#lw').value,sp:+$('#ls').value,fg:T.tx,bg:T.bg,ac:T.ac});
+ const sw=(752-(n-1)*12)/n;x.textBaseline='alphabetic';S.cols.forEach((q,i)=>{const px=800+i*(sw+12);rr(px,48,sw,300,20,q.h,'rgba(0,0,0,.06)');x.fillStyle=tx(q.h);x.font=ft(700,Math.min(22,sw/6.2),F[1]);x.fillText(q.h.toUpperCase(),px+14,308);x.font=ft(400,Math.min(16,sw/8),F[1]);x.globalAlpha=.8;x.fillText(cname(q.h),px+14,332);x.globalAlpha=1});
+ shades(S.cols[0].h).forEach((h,j)=>rr(800+j*68,370,62,62,12,h));
+ x.fillStyle=T.tx;x.font=ft(700,140,F[0]);x.fillText('Aa',60,660);x.font=ft(700,30,F[0]);x.fillText(F[0],60,716);x.font=ft(400,24,F[1]);x.globalAlpha=.7;x.fillText(F[1]+': основной текст',60,756);x.globalAlpha=1;
+ x.font=ft(700,44,F[0]);x.fillText('Заголовок',360,610);x.font=ft(700,30,F[0]);x.fillText('Подзаголовок',360,660);x.font=ft(400,22,F[1]);x.fillText('Основной текст читается легко.',360,706);
+ rr(800,480,230,60,R,T.ac);x.fillStyle=tx(T.ac);x.font=ft(600,22,F[1]);x.textAlign='center';x.fillText('Кнопка',915,518);x.textAlign='left';rr(1050,480,230,60,R,null,T.ac);x.fillStyle=T.ac;x.textAlign='center';x.fillText('Вторая',1165,518);x.textAlign='left';
+ rr(800,570,480,170,Math.round(R*1.5),'#ffffff','rgba(0,0,0,.08)');x.fillStyle=T.tx;x.font=ft(700,28,F[0]);x.fillText('Карточка',830,628);x.font=ft(400,20,F[1]);x.globalAlpha=.7;x.fillText('Текст внутри карточки со скруглениями бренда.',830,670);x.globalAlpha=1;
+ rr(1310,480,242,260,Math.round(R*1.5),T.ac);x.fillStyle=tx(T.ac);x.font=ft(700,30,F[0]);x.fillText('Акцент',1336,552);
+ x.fillStyle=T.tx;x.globalAlpha=.55;x.font=ft(400,20,F[1]);x.fillText(nm+' · '+(curNiche()||'фирменный стиль')+' · '+new Date().toLocaleDateString('ru'),60,930);x.globalAlpha=1;c.toBlob(b=>dl('brand-board.png',b))}
+$('#fg .bar').insertAdjacentHTML('afterbegin','<button class="pri" data-fg="brd">Бренд-борд PNG</button>');$('#fg [data-fg=tks]').classList.remove('pri');
+$('#fg').onclick=async e=>{const k=e.target.dataset.fg;if(!k)return;if(k=='brd')return boardPNG();if(k=='zip'){try{toast('Собираю…');const z=await jz();for(const f of Object.values(FG))z.file(f[0],f[1]());z.file('tokens-w3c.json',tokens());z.file('palette.ase',ase());dl('figma-package.zip',await z.generateAsync({type:'blob'}))}catch{toast('Не удалось собрать архив')}return}const f=FG[k];dl(f[0],f[1](),f[2])};
+$('#y_go').click();
 
 /* === ЗАПУСК === */
 const T=[['y','Стиль бренда'],['r','Правила дизайна'],['p','Палитра'],['t','Тренды 2026'],['c','Клиенты'],['x','Извлечение'],['f','Шрифты'],['s','Форматы'],['i','Айдентика'],['k','Компоненты'],['w','Сайты'],['n','Контент'],['q','Презентации'],['e','Экспорт'],['l','Библиотека']];
