@@ -223,6 +223,15 @@ button{transition:background .15s,border-color .15s,transform .12s,box-shadow .1
  <div id="n_val"></div><div id="n_grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px"></div>
  <h3>Хештеги и рубрики</h3><div class="bar"><select id="n_nh"></select><button id="n_hc">Копировать хештеги</button></div><div id="n_h"></div>
 </section>
+<section class="tab" id="t-m">
+ <div class="card"><b>Мокапы и стикеры.</b> <span style="color:var(--mut)">Логотип и цвета бренда на кружке, футболке, пакете, вывеске. Стикер 512×512 с прозрачным фоном для Telegram.</span>
+ <div class="chips" id="mk_i" style="margin-top:12px"></div><div class="chips" id="mk_c" style="margin-top:8px"></div>
+ <div style="margin-top:14px;text-align:center"><canvas id="mk_cv" style="max-width:100%;height:auto;border-radius:14px;border:1px solid var(--line)"></canvas></div>
+ <div class="bar" style="margin-top:12px"><button class="pri" id="mk_d">Скачать PNG</button><button id="mk_z">Все мокапы ZIP</button></div></div>
+</section>
+<section class="tab" id="t-b">
+ <div class="card"><b>Проекты по этапам.</b> <span style="color:var(--mut)">Перетащите карточку в другую колонку или нажмите стрелки. Этап синхронизируется с вкладкой «Клиенты».</span><div id="kb" style="display:grid;grid-template-columns:repeat(5,minmax(190px,1fr));gap:10px;overflow-x:auto;margin-top:12px;padding-bottom:6px"></div><div class="bar" style="margin-top:10px"><button id="kb_n">Новый проект</button></div></div>
+</section>
 <section class="tab" id="t-q">
  <div class="card"><b>Текст презентации.</b> <span style="color:var(--mut)">Слайды разделяйте пустой строкой. Первая строка слайда: заголовок. Строки с «-»: список. Строка с «&gt;»: цитата. Первый слайд: титульный, последний: финальный.</span><textarea id="q_in" style="min-height:220px;margin-top:8px">Название проекта
 Презентация для клиента
@@ -974,10 +983,45 @@ async function qrDraw(){const v=$('#qr_t').value.trim(),c=$('#qr_c'),x=c.getCont
 ['qr_t','qr_k','qr_r','qr_l'].forEach(i=>$('#'+i).addEventListener('input',qrDraw));
 $('#qr_p').onclick=()=>$('#qr_t').value.trim()?$('#qr_c').toBlob(b=>dl('qr.png',b)):toast('Введите ссылку или текст');$('#qr_s').onclick=()=>{if(!$('#qr_t').value.trim())return toast('Введите ссылку или текст');dl('qr.svg',qrDraw.svg||'','image/svg+xml')};
 
+/* === МОКАПЫ И СТИКЕРЫ === */
+const MKI=[['mug','Кружка'],['tee','Футболка'],['bag','Пакет'],['sign','Вывеска'],['stk','Стикер Telegram']];let mkK='mug',mkCi=0;
+function mkDraw(c,k,ci){const x=c.getContext('2d'),T=th(),N=$('#bn').value||'Бренд',Z=k=='stk'?512:800,col=(S.cols[ci]||S.cols[S.sel]||S.cols[0]).h,fg=tx(col);c.width=c.height=Z;
+ const LG=(cx,cy,w,mx)=>logo(x,cx,cy,Math.min(mx,w/(N.length*.62+2)),{t:N,k:$('#lm').value,col:$('#ll2').value=='col',wt:$('#lw').value,sp:+$('#ls').value,fg,bg:col,ac:fg}),
+ sh=(f)=>{x.save();x.shadowColor='rgba(15,23,42,.22)';x.shadowBlur=30;x.shadowOffsetY=16;f();x.restore()},
+ gl=(X,Y,W,H)=>{const g=x.createLinearGradient(X,0,X+W,0);g.addColorStop(0,'rgba(0,0,0,.14)');g.addColorStop(.3,'rgba(255,255,255,.12)');g.addColorStop(1,'rgba(0,0,0,.18)');x.fillStyle=g;x.fillRect(X,Y,W,H)};
+ if(k!='stk'){x.fillStyle='#eef0f4';x.fillRect(0,0,Z,Z)}
+ if(k=='mug'){x.lineWidth=38;x.strokeStyle=col;sh(()=>{x.beginPath();x.arc(590,420,88,-1.3,1.3);x.stroke();x.fillStyle=col;x.beginPath();x.roundRect(190,240,400,350,34);x.fill()});gl(190,240,400,350);x.fillStyle='rgba(255,255,255,.35)';x.fillRect(215,260,16,310);LG(390,415,260,64)}
+ if(k=='tee'){const p=new Path2D('M300 150Q400 215 500 150L660 235L595 340L525 300L525 660L275 660L275 300L205 340L140 235Z');sh(()=>{x.fillStyle=col;x.fill(p)});x.save();x.clip(p);gl(140,150,520,520);x.restore();x.strokeStyle='rgba(0,0,0,.18)';x.lineWidth=5;x.beginPath();x.moveTo(300,150);x.quadraticCurveTo(400,215,500,150);x.stroke();LG(400,390,170,44)}
+ if(k=='bag'){x.lineWidth=14;x.strokeStyle=col;x.beginPath();x.arc(330,250,70,Math.PI,0);x.arc(470,250,70,Math.PI,0);x.stroke();sh(()=>{x.fillStyle=col;x.beginPath();x.roundRect(210,260,380,450,18);x.fill()});gl(210,260,380,450);x.fillStyle='rgba(0,0,0,.08)';x.fillRect(210,260,380,26);LG(400,490,270,60)}
+ if(k=='sign'){x.fillStyle='#dfe3ea';x.fillRect(0,0,Z,Z);x.fillStyle='#cfd5de';for(let i=0;i<8;i++)x.fillRect(0,i*100,Z,2);x.strokeStyle='#8a93a3';x.lineWidth=8;x.beginPath();x.moveTo(190,230);x.lineTo(190,300);x.moveTo(610,230);x.lineTo(610,300);x.stroke();sh(()=>{x.fillStyle=col;x.beginPath();x.roundRect(70,300,660,220,22);x.fill()});x.strokeStyle=fg;x.globalAlpha=.35;x.lineWidth=3;x.beginPath();x.roundRect(88,318,624,184,12);x.stroke();x.globalAlpha=1;LG(400,410,520,96)}
+ if(k=='stk'){x.save();x.shadowColor='rgba(0,0,0,.25)';x.shadowBlur=10;x.fillStyle='#fff';x.beginPath();x.roundRect(14,14,484,484,110);x.fill();x.restore();x.fillStyle=col;x.beginPath();x.roundRect(34,34,444,444,92);x.fill();LG(256,256,360,110)}}
+function mkRender(){$('#mk_i').innerHTML=MKI.map(a=>`<button data-k="${a[0]}" class="${a[0]==mkK?'on':''}">${a[1]}</button>`).join('');$('#mk_c').innerHTML=S.cols.map((c,i)=>`<button data-c="${i}" class="${i==mkCi?'on':''}" style="background:${c.h};width:34px;height:34px;padding:0;border-radius:50%" title="${c.h}"></button>`).join('');mkDraw($('#mk_cv'),mkK,mkCi)}
+$('#mk_i').onclick=e=>{const b=e.target.closest('[data-k]');if(b){mkK=b.dataset.k;mkRender()}};$('#mk_c').onclick=e=>{const b=e.target.closest('[data-c]');if(b){mkCi=+b.dataset.c;mkRender()}};
+const mkBlob=(k,ci)=>{const c=document.createElement('canvas');mkDraw(c,k,ci);return new Promise(r=>c.toBlob(r))};
+$('#mk_d').onclick=async()=>dl('mockup-'+mkK+'.png',await mkBlob(mkK,mkCi));
+$('#mk_z').onclick=async()=>{try{await jz();const z=new JSZip();for(const a of MKI)z.file(a[0]+'.png',await mkBlob(a[0],mkCi));dl('mockups.zip',await z.generateAsync({type:'blob'}))}catch{toast('Не удалось собрать ZIP')}};
+CS.m='Выберите предмет и цвет из палитры. Для стикера Telegram оставьте короткое название: оно крупнее читается в чате.';CMD.push(['Мокапы и стикеры',()=>show('m')]);
+
+
+/* === КАНБАН И ДО/ПОСЛЕ === */
+function kbRender(){const el=$('#kb');el.innerHTML=ST.map((n,j)=>{const it=CL.map((c,i)=>[c,i]).filter(a=>(+a[0].stat||0)==j);return `<div data-col="${j}" style="background:#f6f7f9;border:1px solid var(--line);border-radius:12px;padding:8px;min-height:140px"><div style="font-size:12px;color:var(--mut);margin:2px 4px 8px">${n} · ${it.length}</div>`+it.map(a=>`<div draggable="true" data-i="${a[1]}" style="background:#fff;border:1px solid var(--line);border-radius:10px;padding:9px 10px;margin-bottom:8px;cursor:grab;box-shadow:0 1px 3px rgba(15,23,42,.05)"><div data-o="${a[1]}" style="font-weight:600;cursor:pointer">${esc(a[0].name)||'Без названия'}</div><div style="font-size:12px;color:var(--mut);margin:2px 0 6px">${esc(a[0].niche||'')}</div><div class="bar" style="gap:6px;margin:0"><button data-m="${a[1]}:-1" ${j==0?'disabled':''}>‹</button><button data-m="${a[1]}:1" ${j==ST.length-1?'disabled':''}>›</button></div></div>`).join('')+'</div>'}).join('')}
+const kbMove=(i,j)=>{if(j<0||j>=ST.length||!CL[i])return;CL[i].stat=j;csave();kbRender()};
+$('#kb').onclick=e=>{const m=e.target.closest('[data-m]'),o=e.target.closest('[data-o]');if(m){const[i,d]=m.dataset.m.split(':').map(Number);kbMove(i,(+CL[i].stat||0)+d)}else if(o){CC=+o.dataset.o;show('c')}};
+$('#kb').ondragstart=e=>{const c=e.target.closest('[data-i]');if(c)e.dataTransfer.setData('text/plain',c.dataset.i)};
+$('#kb').ondragover=e=>{if(e.target.closest('[data-col]'))e.preventDefault()};
+$('#kb').ondrop=e=>{const c=e.target.closest('[data-col]');if(!c)return;e.preventDefault();kbMove(+e.dataTransfer.getData('text/plain'),+c.dataset.col)};
+$('#kb_n').onclick=()=>{CL.push(mkC());CC=CL.length-1;csave();show('c');toast('Новый клиент создан')};
+CS.b='Держите в «Бриф» только новые заявки. Клиент в «Правки» дольше недели: напишите ему сами.';CMD.push(['Проекты по этапам',()=>show('b')]);
+let baImg=null;
+$('#t-s').insertAdjacentHTML('beforeend',`<div class="card" id="ba"><b>До и после.</b> <span style="color:var(--mut)">Запомните текущий макет, измените цвета или шрифт, затем сравните ползунком.</span><div class="bar" style="margin-top:10px"><button id="ba_s">Запомнить как «до»</button><button class="pri" id="ba_c">Сравнить с текущим</button></div><div id="ba_v" style="display:none;margin-top:12px;max-width:640px"><div id="ba_w" style="position:relative;line-height:0;border-radius:12px;overflow:hidden;border:1px solid var(--line)"><img id="ba_a" style="width:100%"><img id="ba_b" style="width:100%;position:absolute;left:0;top:0;clip-path:inset(0 50% 0 0)"><div id="ba_l" style="position:absolute;top:0;bottom:0;left:50%;width:2px;background:#fff;box-shadow:0 0 6px rgba(0,0,0,.4)"></div></div><input type="range" id="ba_r" min="0" max="100" value="50" style="width:100%;margin-top:8px"><div style="display:flex;justify-content:space-between;font-size:12px;color:var(--mut)"><span>До</span><span>После</span></div></div></div>`);
+$('#ba_s').onclick=()=>{baImg=$('#fcv').toDataURL();toast('Макет «до» сохранён')};
+$('#ba_c').onclick=()=>{if(!baImg)return toast('Сначала запомните макет «до»');$('#ba_b').src=baImg;$('#ba_a').src=$('#fcv').toDataURL();$('#ba_v').style.display='block'};
+$('#ba_r').oninput=e=>{const v=e.target.value;$('#ba_b').style.clipPath=`inset(0 ${100-v}% 0 0)`;$('#ba_l').style.left=v+'%'};
+
 /* === ЗАПУСК === */
-const T=[['y','Стиль бренда'],['r','Правила дизайна'],['p','Палитра'],['t','Тренды 2026'],['c','Клиенты'],['x','Извлечение'],['f','Шрифты'],['s','Форматы'],['i','Айдентика'],['k','Компоненты'],['w','Сайты'],['n','Контент'],['q','Презентации'],['e','Экспорт'],['l','Библиотека']];
-const NG=[['Начать',['y']],['Источники',['t','x']],['Основа',['p','f','i','k']],['Применить',['s','w','n','q']],['Работа',['c','e','l']]];$('#nav').innerHTML=NG.map(g=>`<div class="ng">${g[0]}</div>`+g[1].map(k=>`<button data-t="${k}">${T.find(t=>t[0]==k)[1]}</button>`).join('')).join('')+'<div class="nh">Пробел: новая палитра<br>Ctrl+K: поиск<br>Ctrl+Z: отмена</div>';
-function show(t){document.querySelectorAll('.tab').forEach(s=>s.classList.toggle('on',s.id=='t-'+t));document.querySelectorAll('nav button').forEach(b=>b.classList.toggle('on',b.dataset.t==t));if(t=='e')$('#ex').value=out();if(t=='s')drawF();if(t=='f')fontUI();if(t=='l'){lib();cmpFill()}if(t=='t')trends();if(t=='i')identR();if(t=='c')cRender();if(t=='k')kRender();if(t=='w')sRender();if(t=='n')nInit();if(t=='q')qRender();if(t=='r')rRender();if(t=='y'&&!S.y)$('#y_go').click();coachR()}
+const T=[['y','Стиль бренда'],['r','Правила дизайна'],['p','Палитра'],['t','Тренды 2026'],['c','Клиенты'],['b','Проекты'],['x','Извлечение'],['f','Шрифты'],['s','Форматы'],['m','Мокапы'],['i','Айдентика'],['k','Компоненты'],['w','Сайты'],['n','Контент'],['q','Презентации'],['e','Экспорт'],['l','Библиотека']];
+const NG=[['Начать',['y']],['Источники',['t','x']],['Основа',['p','f','i','k']],['Применить',['s','m','w','n','q']],['Работа',['c','b','e','l']]];$('#nav').innerHTML=NG.map(g=>`<div class="ng">${g[0]}</div>`+g[1].map(k=>`<button data-t="${k}">${T.find(t=>t[0]==k)[1]}</button>`).join('')).join('')+'<div class="nh">Пробел: новая палитра<br>Ctrl+K: поиск<br>Ctrl+Z: отмена</div>';
+function show(t){document.querySelectorAll('.tab').forEach(s=>s.classList.toggle('on',s.id=='t-'+t));document.querySelectorAll('nav button').forEach(b=>b.classList.toggle('on',b.dataset.t==t));if(t=='e')$('#ex').value=out();if(t=='s')drawF();if(t=='f')fontUI();if(t=='l'){lib();cmpFill()}if(t=='t')trends();if(t=='i')identR();if(t=='c')cRender();if(t=='k')kRender();if(t=='w')sRender();if(t=='n')nInit();if(t=='q')qRender();if(t=='r')rRender();if(t=='m')mkRender();if(t=='b')kbRender();if(t=='y'&&!S.y)$('#y_go').click();coachR()}
 $('#nav').onclick=e=>e.target.dataset.t&&show(e.target.dataset.t);
 let init=null;try{if(location.hash.length>10)init=JSON.parse(decodeURIComponent(escape(atob(location.hash.slice(1)))))}catch{}
 init=init||LS.g('bs.cur',null);if(init&&init.cols)apply(init);else{gen();loadFonts()}
